@@ -2,11 +2,13 @@
 import streamlit as st
 import joblib
 import nltk
+import glob
+import os
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 
-# 1. Descarga de recursos NLTK necesarios para el preprocesamiento
+# 1. Descarga de recursos NLTK necesarios
 nltk.download('stopwords', quiet=True)
 
 # 2. Configuración de la interfaz
@@ -16,7 +18,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# 3. Función de preprocesamiento de texto (Nombre e implementación exactos al cuaderno)
+# 3. Función de preprocesamiento de texto idéntica a la del entrenamiento
 def preprocess_text(text):
     tokenizer = RegexpTokenizer(r'\w+')
     tokens = tokenizer.tokenize(str(text).lower())
@@ -26,9 +28,18 @@ def preprocess_text(text):
     tokens = [stemmer.stem(token) for token in tokens]
     return ' '.join(tokens)
 
-# 4. Cargar el pipeline y el diccionario de nombres
+# 4. Función para reensamblar y cargar el pipeline
 @st.cache_resource
 def cargar_recursos():
+    # Reensamblar las partes del pipeline si no existe el archivo completo
+    if not os.path.exists('modelo_ods_pipeline.pkl'):
+        partes = sorted(glob.glob('modelo_ods_pipeline.pkl.part*'))
+        if partes:
+            with open('modelo_ods_pipeline.pkl', 'wb') as outfile:
+                for parte in partes:
+                    with open(parte, 'rb') as infile:
+                        outfile.write(infile.read())
+                        
     pipeline = joblib.load('modelo_ods_pipeline.pkl')
     ods_nombres = joblib.load('ods_nombres.pkl')
     return pipeline, ods_nombres
@@ -48,7 +59,6 @@ st.write(
 
 st.markdown("---")
 
-# Entrada de texto del usuario
 texto_usuario = st.text_area(
     "Texto a analizar:",
     height=180,
@@ -59,20 +69,14 @@ if st.button("Clasificar ODS", type="primary"):
     if not texto_usuario.strip():
         st.warning("Por favor, ingrese un texto antes de presionar el botón.")
     else:
-        # Nota: Pasamos 'texto_usuario' directamente en una lista. 
-        # El pipeline ejecuta 'preprocess_text' internamente dentro del TfidfVectorizer.
         ods_predicho = pipeline.predict([texto_usuario])[0]
-        
-        # Cálculo de probabilidades y confianza
         probabilidades = pipeline.predict_proba([texto_usuario])[0]
         clases = list(pipeline.classes_)
         idx_clase = clases.index(ods_predicho)
         confianza = probabilidades[idx_clase] * 100
 
-        # Mapeo del nombre del ODS
         nombre_ods = ODS_NOMBRES.get(ods_predicho, f"ODS {ods_predicho}")
 
-        # Despliegue de resultados
         st.success("### Resultado de la Clasificación")
         st.subheader(f"🎯 {nombre_ods}")
         st.metric(label="Nivel de Confianza", value=f"{confianza:.2f}%")
