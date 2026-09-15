@@ -1,8 +1,9 @@
 # Carpeta de contexto adicional (no subir al repositorio)
 contexto/
 
-# Modelo reensamblado (se genera a partir de los .part*)
+# Modelos .pkl (reensamblado y generados en notebooks)
 modelo_ods_pipeline.pkl
+notebooks/*.pkl
 
 # Python
 __pycache__/
