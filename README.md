@@ -4,7 +4,7 @@ Proyecto desarrollado como parte del **Microproyecto 2** de la materia Machine L
 
 El clasificador alcanza un **86% de accuracy** y un **F1-Macro de 83%** sobre datos que no vio durante el entrenamiento.
 
-**App en vivo:** [clasificador-ods.streamlit.app](https://clasificador-ods-9mb7mgz56gua7uhmmthdbq.streamlit.app/)
+**App en vivo:** [clasificador-ods.streamlit.app](https://clasificador-ods-s75tyrex9nsrb8icen7kjv.streamlit.app/)
 
 ---
 
@@ -73,7 +73,7 @@ Se verificó el modelo con 5 muestras aleatorias del conjunto de test: 4 de 5 fu
 
 ```bash
 # Clonar e instalar
-git clone <url-del-repo>
+git clone https://github.com/margomeza16/clasificador-ods.git
 cd clasificador-ods
 pip install -r requirements.txt
 
