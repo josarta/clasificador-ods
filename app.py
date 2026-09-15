@@ -209,6 +209,39 @@ st.markdown("""
 
 st.markdown('<hr class="sep">', unsafe_allow_html=True)
 
+# Panel de los 16 ODS que evalúa el modelo
+with st.expander("Ver los 16 ODS que evalúa el modelo"):
+    ods_lista = [
+        (1, "Fin de la pobreza"),
+        (2, "Hambre cero"),
+        (3, "Salud y bienestar"),
+        (4, "Educación de calidad"),
+        (5, "Igualdad de género"),
+        (6, "Agua limpia y saneamiento"),
+        (7, "Energía asequible y no contaminante"),
+        (8, "Trabajo decente y crecimiento económico"),
+        (9, "Industria, innovación e infraestructura"),
+        (10, "Reducción de las desigualdades"),
+        (11, "Ciudades y comunidades sostenibles"),
+        (12, "Producción y consumo responsables"),
+        (13, "Acción por el clima"),
+        (14, "Vida submarina"),
+        (15, "Vida de ecosistemas terrestres"),
+        (16, "Paz, justicia e instituciones sólidas"),
+    ]
+    html_ods = '<div style="display:flex; flex-wrap:wrap; gap:8px; padding:4px 0;">'
+    for num, nombre in ods_lista:
+        color = ODS_COLORES.get(num, "#333")
+        icono = ODS_ICONOS.get(num, "")
+        html_ods += (
+            f'<span style="background:{color}; color:#fff; padding:6px 12px; '
+            f'border-radius:6px; font-size:0.82rem; font-weight:600;">'
+            f'{icono} ODS {num}: {nombre}</span>'
+        )
+    html_ods += '</div>'
+    st.markdown(html_ods, unsafe_allow_html=True)
+    st.caption("El ODS 17 (Alianzas para lograr los objetivos) no cuenta con registros en el dataset.")
+
 # Ejemplos rápidos
 st.markdown("**Prueba con un ejemplo** o escribe tu propio texto:")
 cols_ej = st.columns(len(EJEMPLOS))
