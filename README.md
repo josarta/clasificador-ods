@@ -16,7 +16,6 @@ clasificador-ods/
 │   └── Datos_textosODS.xlsx           # Dataset OSDG-CD traducido al español
 ├── notebooks/
 │   └── microproyecto2.ipynb           # Notebook con todo el desarrollo
-├── models/                            # Pipeline exportado (.joblib)
 ├── app.py                             # Aplicación Streamlit
 ├── modelo_ods_pipeline.pkl.part0-3    # Modelo particionado para deploy
 ├── ods_nombres.pkl                    # Mapeo numérico → nombre del ODS
